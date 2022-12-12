@@ -19,12 +19,7 @@ const Navbar = () => {
               <li className="nav-item">
                 <a className="nav-link" href="#">Features</a>
               </li>
-              <li className="nav-item">
-                <a  href="#">Pricing</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled">Disabled</a>
-              </li>
+              
             </ul>
           </div>
         </div>
