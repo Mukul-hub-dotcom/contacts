@@ -7,6 +7,7 @@ import ContactList from './components/ContactList';
 import {Routes,Route, Navigate} from 'react-router-dom'
 import ViewContact from './components/ViewContact';
 import EditContact from './components/EditContact';
+import Spinner from './components/Spinner';
 
 
 function App() {
