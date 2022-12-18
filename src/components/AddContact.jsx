@@ -23,9 +23,9 @@ const AddContact = () => {
   })
 
   useEffect(()=>{
-jamna()
+newContact()
   },[])
-  let jamna=async()=>{
+  let newContact=async()=>{
 try {
   setState({...state,loading:true})
   let res=await ContactService.getGroup()
@@ -44,15 +44,15 @@ try {
   let updateInput=(event)=>{
 setState({
   ...state,
-  contact:{
-    ...state,
+  
     contact:{
       ...state.contact,
       [event.target.name]:event.target.value
-    }
+    
   }
 })
   }
+
 
 let submitForm=async(event)=>{
   event.preventDefault()
@@ -76,7 +76,7 @@ try {
 
 
   let {loading,contact,groups,errorMessage}=state
-  console.log(state)
+  console.log(contact)
 
   return (
     <div style={{marginLeft:"30px"}} >

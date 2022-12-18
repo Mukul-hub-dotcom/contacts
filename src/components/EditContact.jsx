@@ -1,7 +1,32 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React,{useEffect, useState} from 'react'
+import { Link,useParams } from 'react-router-dom'
+import { ContactService } from '../services/ContactService'
 
 const EditContact = () => {
+  let {contactId}=useParams()
+  let [state,setState]=useState({
+    loading:false,
+    contact:{},
+    group:[],
+    errorMessage:''
+
+  })
+
+  useEffect(()=>{
+
+  },[contactId])
+
+  let edit=async ()=>{
+    try {
+      setState({...state,loading:false})
+      let res=await ContactService.getContact(contactId)
+      setState
+    } catch (error) {
+      
+    }
+  }
+
+
   return (
       <div style={{marginLeft:"30px"}} >
         <p className="h4 fw-bold text-primary">Edit Contact</p>
