@@ -13,6 +13,31 @@ const ContactList = () => {
     errorMessage:''
 
   })
+
+  const clickDelete=async(contactId)=>{
+try {
+  let res=await ContactService.deleteContact(contactId)
+  if(res){
+    setState({...state,loading:true})
+    const res = await ContactService.getAllContacts();
+    setState({
+      ...state,
+      loading:false,
+      contacts:res.data
+    })
+    
+    
+  }
+  
+} catch (error) {
+  setState({
+    ...state,
+    loading:false,
+    errorMessage:error.Message
+  })
+  
+}
+  }
   
 
 
@@ -114,7 +139,7 @@ const ContactList = () => {
                   <Link to={'/contact/edit/:contactId'} className="btn btn-primary my-1">
                     <i className="fa fa-pen"></i>
                   </Link>
-                  <button className="btn btn-danger">
+                  <button className="btn btn-danger my-1" onClick={()=>clickDelete(ele.id)}>
                     <i className="fa fa-trash"></i>
                   </button>
                 </div>
