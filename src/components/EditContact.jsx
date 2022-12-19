@@ -1,59 +1,161 @@
 import React,{useEffect, useState} from 'react'
-import { Link,useParams } from 'react-router-dom'
+import { Link,useParams,useNavigate } from 'react-router-dom'
 import { ContactService } from '../services/ContactService'
+import Spinner from './Spinner'
 
 const EditContact = () => {
+  let navigate=useNavigate()
   let {contactId}=useParams()
   let [state,setState]=useState({
     loading:false,
-    contact:{},
+    contact:{
+      name:'',
+      photo:'',
+      mobile:'',
+      email:'',
+      company:'',
+      title:'',
+      groupId:''
+
+
+    },
     group:[],
     errorMessage:''
 
   })
 
   useEffect(()=>{
-
+edit()
   },[contactId])
 
   let edit=async ()=>{
     try {
-      setState({...state,loading:false})
+      setState({...state,loading:true})
       let res=await ContactService.getContact(contactId)
-      setState
+      let grpRes=await ContactService.getGroup()
+      setState({...state,
+        loading:false,
+      contact:res.data,
+      group:grpRes.data
+    })
     } catch (error) {
+      setState({...state,
+        loading:false,
+      errorMessage:error.Message
+    })
+
       
     }
   }
+  let updateInput=(e)=>{
+    setState({
+      ...state,
+      contact:{
+        ...state.contact,
+        [e.target.name]:e.target.value
+      }
+    })
+  }
+let submitForm=async(event)=>{
+  event.preventDefault()
+try {
+  let res=await ContactService.updateContact(state.contact,contactId)
+  // here contactid is from use params
+  if(res){
+    navigate('/',{replace:true})
+    console.log(state.contact)
+  }
+  
+} catch (error) {
+  setState({
+    ...state,
+    errorMessage:error.Message
+  })
+  navigate(`/contact/edit/${contactId}`,{replace:false})
+}
+
+}
+
+
+  let {loading,contact,group,errorMessage}=state
 
 
   return (
       <div style={{marginLeft:"30px"}} >
+        
         <p className="h4 fw-bold text-primary">Edit Contact</p>
-        <div className="row align-items-center">
+        {
+          loading?<Spinner/>:
+          <div className="row align-items-center">
           <div className="col-md-4">
-            <form action="">
+            <form onSubmit={submitForm}>
               <div className="mb-2">
-                <input type="text" className="form-control" placeholder='Name'/>
+                <input type="text" 
+                required='true'
+                name='name'
+                onChange={updateInput}
+                value={contact.name}
+                className="form-control" placeholder='Name'/>
                 </div>
+
                 <div className="mb-2">
-                <input type="text" className="form-control" placeholder='Photo URL'/>
+                <input type="text" 
+                required='true'
+                name='photo'
+                onChange={updateInput}                
+                value={contact.photo}
+                className="form-control" placeholder='Photo URL'/>
                 </div>
+
                 <div className="mb-2">
-                <input type="text" className="form-control" placeholder='Mobile'/>
+                <input type="text" 
+                required='true'
+                name='mobile'
+                onChange={updateInput}
+                value={contact.mobile}
+                className="form-control" placeholder='Mobile'/>
                 </div>
+
                 <div className="mb-2">
-                <input type="email" className="form-control" placeholder='Email'/>
+                <input type="email" 
+                required='true'
+                name='email'
+                onChange={updateInput}
+                value={contact.email}
+                className="form-control" placeholder='Email'/>
                 </div>
+
                 <div className="mb-2">
-                <input type="text" className="form-control" placeholder='Company'/>
+                <input type="text" 
+                required='true'
+                name='company'
+                onChange={updateInput}
+                value={contact.company}
+                className="form-control" placeholder='Company'/>
                 </div>
+
                 <div className="mb-2">
-                <input type="text" className="form-control" placeholder='Title'/>
+                <input type="text" 
+                required='true'
+                name='title'
+                onChange={updateInput}
+                value={contact.title}
+                className="form-control" placeholder='Title'/>
                 </div>
                 <div className="mb-2">                  
-                  <select name="" id="" className="form-control">
+                  <select 
+                  name='groupId'
+                  value={contact.groupId}
+                  onChange={updateInput}
+                  id="" className="form-control">
                     <option value="">Select a group</option>
+                    {
+                      group.map(ele=>{
+                        return(
+                          <option key ={ele.id} value={ele.id}>{ele.name}</option>
+                        )
+                      })
+                    }
                     </select></div>
                 <div className="mb-2">
                 <input type="submit" className="btn btn-primary" value='Update'/>
@@ -62,9 +164,10 @@ const EditContact = () => {
             </form>
           </div>
           <div className="col-md-6">
-            <img src="https://thumbs.dreamstime.com/b/telephone-icon-vector-male-user-person-profile-avatar-phone-symbol-business-contact-communication-flat-color-glyph-145875162.jpg" alt="" className="contact-img" />
+            <img src={contact.photo} alt="" className="contact-img" />
           </div>
         </div>
+        }
     </div>
   )
 }

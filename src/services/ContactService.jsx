@@ -1,6 +1,6 @@
 import axios from 'axios'
 export class ContactService{
-    static serverURL='http://localhost:9000'
+    static serverURL='https://json-files.onrender.com/'
 
     static getAllContacts(){
         let dataURL=`${this.serverURL}/contacts`;
@@ -38,4 +38,14 @@ export class ContactService{
          return axios.delete(dataURL)
 
     }
+
+    static updateContact(contact,contactId){
+        let dataURL=`${this.serverURL}/contacts/${contactId}`;
+         return axios.put(dataURL, contact)
+
+    }
+
+
+
+
 }
