@@ -100,7 +100,6 @@ try {
   return (
     
     <div style={{marginLeft:"30px",marginRight:"30px"}}>
-      <p>{query.text}</p>
       <div className="h4" style={{fontWeight:"bold"}}>
           Phone Directory
 

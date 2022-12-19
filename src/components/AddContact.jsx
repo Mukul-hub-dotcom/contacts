@@ -80,7 +80,6 @@ try {
 
   return (
     <div style={{marginLeft:"30px"}} >
-      <p>{JSON.stringify(contact)}</p>
         <p className="h4 fw-bold">Create Contact</p>
         <div className="row">
           <div className="col-md-4">
